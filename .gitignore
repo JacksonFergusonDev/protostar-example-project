@@ -1,0 +1,12 @@
+*~
+.DS_Store
+.cache/
+.env
+.idea/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.venv/
+.vscode/
+Thumbs.db
+__pycache__/

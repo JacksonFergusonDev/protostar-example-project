@@ -1,0 +1,49 @@
+name: Protostar sync
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+
+      - name: Sync with the template
+        run: |
+          # The release that last wrote protostar.lock, so CI matches your team.
+          version=$(sed -n 's/^producer_version = "\(.*\)"$/\1/p' protostar.lock)
+          set +e
+          # --trust runs the uv and hook commands the update needs without asking.
+          # The template's files decide what they run, so keep it to a template you trust.
+          uvx "protostar@$version" sync --to latest --trust --json > "$RUNNER_TEMP/sync.json"
+          code=$?
+          set -e
+          # 0: in step. 1: safe changes applied, conflicts left for a person.
+          if [ "$code" -gt 1 ]; then exit "$code"; fi
+          conflicts=$(jq '.review.conflicts | length' "$RUNNER_TEMP/sync.json")
+          {
+            echo "Protostar $version synced this project with its template."
+            if [ "$conflicts" -gt 0 ]; then
+              echo
+              echo "$conflicts conflict(s) kept your version. Run \`protostar status\`"
+              echo "locally to see each one and the command that settles it."
+            fi
+          } > "$RUNNER_TEMP/body.md"
+          # sync installs this clone's git hooks; keep them off the bot's commit.
+          git config core.hooksPath /dev/null
+
+      - uses: peter-evans/create-pull-request@v8
+        with:
+          branch: protostar/sync
+          commit-message: "chore: sync with the project template"
+          title: "chore: sync with the project template"
+          body-path: ${{ runner.temp }}/body.md
+          delete-branch: true
