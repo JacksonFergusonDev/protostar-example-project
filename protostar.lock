@@ -9,11 +9,11 @@ producer_version = "0.10.1"
 [template]
 origin = "remote"
 locator = "https://github.com/JacksonFergusonDev/protostar-example-templates"
-digest = "1d05f423d6666bbeadd29ee2e76a48117865e65f3413b22a438ce43f344c779a"
-version = "1.0.0"
+digest = "03513c45d8cb900958d5b487d4bfbe24ab5114a5c5a28cd2f4294905d914a965"
+version = "1.1.0"
 path = "service"
-ref = "v1.0.0"
-revision = "ed21f55f4e393536a91ce83006d1b1f926287dc9"
+ref = "v1.1.0"
+revision = "fdf06da8f5f1f041a3afc527e4885804b2de1af0"
 
 [[files]]
 path = ".env.example"
@@ -43,7 +43,7 @@ baseline = "set shell := [\"bash\", \"-euc\", \"-o\", \"pipefail\"]\nset unstabl
 [[files]]
 path = "pyproject.toml"
 policy = "structured-toml"
-baseline = "[build-system]\nbuild-backend = \"hatchling.build\"\nrequires = [\"hatchling\"]\n\n[project]\nclassifiers = [\"Programming Language :: Python :: 3\", \"Programming Language :: Python :: 3.13\", \"Programming Language :: Python :: 3.14\", \"Operating System :: MacOS\", \"Operating System :: POSIX :: Linux\", \"Operating System :: Microsoft :: Windows\"]\ndescription = \"Add your description here.\"\nreadme = \"README.md\"\n[[project.authors]]\nemail = \"your-email@example.com\"\nname = \"your-name\"\n\n[project.scripts]\norbit-api = \"orbit_api.app:main\"\n\n[tool.hatch.build.targets.wheel]\npackages = [\"src/orbit_api\"]\n\n[tool.mypy]\ncheck_untyped_defs = true\nexplicit_package_bases = true\nmypy_path = \"src\"\npretty = true\npython_version = \"3.13\"\nshow_error_codes = true\nshow_error_context = true\nstrict = true\nwarn_return_any = true\nwarn_unused_configs = true\n\n[tool.pytest.ini_options]\naddopts = \"--strict-markers\"\npythonpath = [\".\"]\ntestpaths = [\"tests\"]\n\n[tool.ruff]\nline-length = 88\n\n[tool.ruff.lint]\nignore = [\"E501\"]\nselect = [\"A\", \"B\", \"C4\", \"E\", \"F\", \"I\", \"RUF\", \"UP\"]\n"
+baseline = "[build-system]\nbuild-backend = \"hatchling.build\"\nrequires = [\"hatchling\"]\n\n[project]\nclassifiers = [\"Programming Language :: Python :: 3\", \"Programming Language :: Python :: 3.13\", \"Programming Language :: Python :: 3.14\", \"Operating System :: MacOS\", \"Operating System :: POSIX :: Linux\", \"Operating System :: Microsoft :: Windows\"]\ndescription = \"Add your description here.\"\nreadme = \"README.md\"\n[[project.authors]]\nemail = \"your-email@example.com\"\nname = \"your-name\"\n\n[project.scripts]\norbit-api = \"orbit_api.app:main\"\n\n[tool.coverage.report]\nshow_missing = true\n\n[tool.coverage.run]\nbranch = true\n\n[tool.hatch.build.targets.wheel]\npackages = [\"src/orbit_api\"]\n\n[tool.mypy]\ncheck_untyped_defs = true\nexplicit_package_bases = true\nmypy_path = \"src\"\npretty = true\npython_version = \"3.13\"\nshow_error_codes = true\nshow_error_context = true\nstrict = true\nwarn_return_any = true\nwarn_unused_configs = true\n\n[tool.pytest.ini_options]\naddopts = \"--strict-markers\"\npythonpath = [\".\"]\ntestpaths = [\"tests\"]\n\n[tool.ruff]\nline-length = 88\n\n[tool.ruff.lint]\nextend-select = [\"SIM\"]\nignore = [\"E501\"]\nselect = [\"A\", \"B\", \"C4\", \"E\", \"F\", \"I\", \"RUF\", \"UP\"]\n"
 
 [[files]]
 path = "src/orbit_api/__init__.py"
@@ -109,6 +109,14 @@ name = "pytest"
 marker = ""
 declared = "pytest"
 materialized = "pytest>=9.1.1"
+
+[[dependencies]]
+path = "pyproject.toml"
+group = "dev"
+name = "pytest-cov"
+marker = ""
+declared = "pytest-cov"
+materialized = "pytest-cov>=7.1.0"
 
 [[dependencies]]
 path = "pyproject.toml"
